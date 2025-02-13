@@ -26,30 +26,36 @@ end
 firing_rate = wfs.meanRate;
 wf_chars = [spike_asymmetry,spike_width,log10(firing_rate)];
 
-% Perform k-means clustering
+% Perform k-means clustering. Remember to 1) log all firing rates before k means clustering 2) z score all data
 k = 2;
 [idx, C] = kmeans(zscore(wf_chars), k);
+% Define colors for clusters
+colors = [1 0 0; 0 0 1]; % Blue and red
+
+% Map cluster indices to colors
+cluster_colors = colors(idx, :);
 
 % Visualize the clustering
 figure;
-scatter3(wf_chars(:,1), wf_chars(:,2), 10.^wf_chars(:,3), 50, idx, 'filled');
+scatter3(wf_chars(:,1), wf_chars(:,2), 10.^wf_chars(:,3), 25, cluster_colors);
+
 set(gca, 'ZScale', 'log')
 hold on;
-scatter3(C(:,1), C(:,2), C(:,3), 100, 'kx', 'LineWidth', 2);
-title('3D Cluster Visualization');
-xlabel('spike_asymmetry');
-ylabel('spike_width');
-zlabel('firing_rate');
+% scatter3(C(:,1), C(:,2), C(:,3), 100, 'kx', 'LineWidth', 2);
+title('K-means clustering');
+xlabel('Spike asymmetry');
+ylabel('Spike width');
+zlabel('Firing rate');
 grid on;
 
 %% to further examine the extremely high firing rate interneurons (cluster 3)
 t  = -39:80;
 t = t/30;
 
-clust3_idx = find(idx == 3);
+clust3_idx = find(idx == 1);
 meanrate = zeros(4,1);
 for i = 1:length(clust3_idx)
-    plot(t,wfs.mxWF(clust3_idx(i),:),'b')
+    plot(t,wfs.mxWF(clust3_idx(i),:),'r')
     grid on
     meanrate(i) = wfs.meanRate(clust3_idx(i));
     %text(5, 100+100i, ['FR =' num2str(meanrate)]);
@@ -58,9 +64,10 @@ for i = 1:length(clust3_idx)
 end 
 
 hold on  
+%%
 clust2_idx = find(idx == 2);
 for i = 1:length(clust2_idx)
-    plot(t,wfs.mxWF(clust2_idx(i),:),'r')
+    plot(t,wfs.mxWF(clust2_idx(i),:),'b')
     grid on
     meanrate(i) = wfs.meanRate(clust2_idx(i));
     %text(5, 100+100i, ['FR =' num2str(meanrate)]);
