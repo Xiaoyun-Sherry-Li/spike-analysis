@@ -1,8 +1,11 @@
-addpath D:\GitHub\spike-analysis\extractWF_xl
+addpath C:\Users\xl313\OneDrive\Documents\GitHub\spike-analysis\place_cell_analysis
+addpath('C:\Users\xl313\OneDrive\Documents\GitHub\spike-analysis\npy-matlab-master\npy-matlab')
+addpath('C:\Users\xl313\OneDrive\Documents\GitHub\spike-analysis\extractWF_xl')
+savepath
 
 %% Read in Ephys file  
 filepath = 'Z:\Sherry\ephys_acquisition\RBY52\4turnsTotal2ndPart_250120_122553\';
-tduration = 1800;  % in seconds, % so to extract 0.5 hr, t = 1800 
+tduration = 3600;  % in seconds, % so to extract 1 hr, t = 3600 
 tstart = 0;
 
 %% Read in Intan digitalIn.dat file
@@ -10,6 +13,12 @@ tstart = 0;
 
 fprintf("Acquisition frame rate (FRS): %.3f\n", length(dig_time{1})/tduration);
 
+%% Read in Kilosort spike times
+ksDir = 'Z:\Sherry\ephys_acquisition\RBY52\4turnsTotal2ndPart_250120_122553\kilosort4';
+fs = 30000;
+option_only_good = 1;
+session_label = '4turnsTotal2ndPart_250120_122553';
+S = importKilosortStruct(ksDir, fs, option_only_good, session_label);
 
 %% Specify parameters for placeCellAnalysis function 
 xx = com_pos_smooth(:,1,1); %(:,:,1) is the body centroid

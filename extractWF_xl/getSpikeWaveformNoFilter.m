@@ -1,4 +1,4 @@
-function [mean_wave_filt, twave] = getSpikeWaveform(memMap, tspike, Fs,offset_t_final, duration_t_final)
+function [mean_wave_filt, twave] = getSpikeWaveformNoFilter(memMap, tspike, Fs,offset_t_final, duration_t_final)
 % Inputs
 % memMap: raw file
 % tspike: spike times

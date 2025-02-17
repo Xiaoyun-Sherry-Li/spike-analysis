@@ -1,4 +1,4 @@
-addpath D:\GitHub\spike-analysis\extractWF_xl
+addpath C:\Users\xl313\OneDrive\Documents\GitHub\spike-analysis\place_cell_analysis
 
 %% Read in Ephys file  
 filepath = 'Z:\Sherry\ephys_acquisition\RBY52\4turnsTotal2ndPart_250120_122553\';
@@ -10,6 +10,12 @@ tstart = 0;
 
 fprintf("Acquisition frame rate (FRS): %.3f\n", length(dig_time{1})/tduration);
 
+%% Read in Kilosort spike times
+ksDir = 'Z:\Sherry\ephys_acquisition\RBY52\4turnsTotal2ndPart_250120_122553\kilosort4';
+fs = 30000;
+option_only_good = 1;
+session_label = '4turnsTotal2ndPart_250120_122553';
+S = importKilosortStruct(ksDir, fs, option_only_good, session_label);
 
 %% Specify parameters for placeCellAnalysis function 
 xx = com_pos_smooth(:,1,1); %(:,:,1) is the body centroid
@@ -19,6 +25,7 @@ FPS = 50; %   FPS: frames per second of the behavior
 
 
 ISPK = dig_time{1,1}; %   ISPK: spike indices into the behavior ISPK
+
 NSHUFFLE = 0; %   NSHUFFLE: number of random shuffles to conduct (specify 0 for no shuffling)
 LIMS = [0,660.4]; %   LIMS: two-number vector limits of the square arena (*[0 609.6] (mm) in the 2-foot arena)
 NBINS = 40; %   NBINS: number of bins in which to divide the behavior *(40 bins)
