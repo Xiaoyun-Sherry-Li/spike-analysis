@@ -106,14 +106,18 @@ end
 if nargout>2
     samplerate = h.sample_rate;
     nt = size(dig_raw,2);
+    fprintf("the size of dig_raw: %d\n", nt)
     t_dig = (0:nt-1)/samplerate + tstart; % (s)
     dig_time = cell(ndig_in,1);
     for ii = 1:ndig_in
         %iData_rise contains all rising edges of TTL pulses within t_dig
         iData_rise = t_dig(diff(dig_raw(ii,:))>0); % t_dig selects the TTL pulses happen in [tstart:(tstart+tDuration)]
+        fprintf("the size of diff(dig_raw(ii,:): %d\n", size(diff(dig_raw(ii,:))));
+        fprintf("the size of t_dig: %d\n", size(t_dig));
         iData_fall = t_dig(diff(dig_raw(ii,:))<0);
         iData_rise = iData_rise(:);
         iData_fall = iData_fall(:);
+        fprintf("the size of iData_rise: %d\n", size(iData_rise))
         
         % First column is rise times, second column is fall times
         if iData_rise(1)>iData_fall(1)

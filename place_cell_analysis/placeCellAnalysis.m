@@ -47,6 +47,7 @@ w = hamming(nhamming)*hamming(nhamming)';
 w = w/sum(w(:));
 
 % Calculate position counts (doesn't change with shuffling)
+% occupancy map
 pos_count = histcounts2(xx, yy, bin_edges, bin_edges)'; % Transpose because it places the x categories in rows not columns
 pos_time = pos_count/fps;
 pos_time_smooth = nanconv(pos_time, w,'nanout', 'edge'); % no difference from conv if there aren't any nans, but important when making gaze maps
@@ -88,6 +89,7 @@ for i_shuffle = 1:max(1,nshuffle)
     
 end
 
+
 if plot_on
     
     figure;
@@ -110,7 +112,7 @@ if plot_on
     axis(ah,'image');
     set(ah,'XLim',bin_edges([1 end]),'YLim',bin_edges([1 end]));
     drawnow
-    
+
 end
 
 
